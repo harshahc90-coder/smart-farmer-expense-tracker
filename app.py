@@ -705,8 +705,12 @@ def budget():
 
 # ================= START =================
 
+# ==================== START APPLICATION ====================
+
+# Create the database and all required tables when the app starts.
+# This is important for both local Flask and Render/Gunicorn.
+create_database()
+
+
 if __name__ == "__main__":
-
-    create_database()
-
     app.run(debug=True)
