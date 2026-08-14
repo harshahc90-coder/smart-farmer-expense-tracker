@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Transaction History</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<header>
+    <h1>📋 Transaction History</h1>
+    <p>All your farm income and expenses</p>
+</header>
+
+<main>
+
+    <div class="history-header">
+
+        <h2>All Transactions</h2>
+
+        <a href="/" class="action-button">
+            ⬅️ Dashboard
+        </a>
+
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Category / Source</th>
+                    <th>Amount</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for transaction in transactions %}
+
+                <tr>
+
+                    <td>
+                        {{ transaction["date"] }}
+                    </td>
+
+                    <td>
+
+                        {% if transaction["type"] == "Expense" %}
+                            💸 Expense
+                        {% else %}
+                            💰 Income
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+                        {{ transaction["category"] }}
+                    </td>
+
+                    <td>
+                        ₹{{ "%.2f"|format(transaction["amount"]) }}
+                    </td>
+
+                    <td>
+                        {{ transaction["description"] }}
+                    </td>
+
+                    <td>
+
+                        {% if transaction["type"] == "Expense" %}
+
+                        <a
+                            href="/delete-expense/{{ transaction['id'] }}"
+                            onclick="return confirm('Delete this expense?');">
+                            🗑️ Delete
+                        </a>
+
+                        {% else %}
+
+                        <a
+                            href="/delete-income/{{ transaction['id'] }}"
+                            onclick="return confirm('Delete this income?');">
+                            🗑️ Delete
+                        </a>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% else %}
+
+                <tr>
+                    <td colspan="6">
+                        No transactions found.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</main>
+
+</body>
+</html>

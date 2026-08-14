@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Expense</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<header>
+    <h1>💸 Add Farm Expense</h1>
+    <p>Record your farming expenses</p>
+</header>
+
+<main>
+
+    <div class="card">
+
+        <h2>➕ New Expense</h2>
+
+        <form method="POST" action="/add-expense">
+
+            <label for="amount">
+                Amount (₹)
+            </label>
+
+            <input
+                type="number"
+                id="amount"
+                name="amount"
+                step="0.01"
+                min="0"
+                placeholder="Enter amount"
+                required
+            >
+
+            <label for="category">
+                Category
+            </label>
+
+            <select id="category" name="category" required>
+
+                <option value="">
+                    Select category
+                </option>
+
+                <option value="Seeds">🌾 Seeds</option>
+                <option value="Fertilizers">🧪 Fertilizers</option>
+                <option value="Pesticides">🧴 Pesticides</option>
+                <option value="Labour">👷 Labour</option>
+                <option value="Fuel">⛽ Fuel</option>
+                <option value="Machinery">🚜 Machinery</option>
+
+            </select>
+
+            <label for="date">
+                Date
+            </label>
+
+            <input
+                type="date"
+                id="date"
+                name="date"
+                required
+            >
+
+            <label for="description">
+                Description
+            </label>
+
+            <input
+                type="text"
+                id="description"
+                name="description"
+                placeholder="Example: Fertilizer for paddy"
+            >
+
+            <button type="submit">
+                💾 Save Expense
+            </button>
+
+        </form>
+
+        <br>
+
+        <a href="/" class="action-button">
+            ⬅️ Back to Dashboard
+        </a>
+
+    </div>
+
+</main>
+
+</body>
+</html>

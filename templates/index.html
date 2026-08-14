@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Farmer Expense Tracker</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<header>
+    <h1>🌾 Smart Farmer Expense Tracker</h1>
+    <p>Manage your farm finances easily</p>
+</header>
+
+<main>
+
+    <!-- DASHBOARD TITLE -->
+
+    <h2>Farmer Dashboard 👨‍🌾</h2>
+
+    {% if user_name %}
+        <p>
+            Welcome, <strong>{{ user_name }}</strong>! 👋
+        </p>
+    {% endif %}
+
+
+    <!-- SUMMARY CARDS -->
+
+    <div class="dashboard">
+
+        <div class="card">
+            <h3>💰 Total Income</h3>
+
+            <p>
+                ₹{{ "%.2f"|format(total_income) }}
+            </p>
+        </div>
+
+
+        <div class="card">
+            <h3>💸 Total Expenses</h3>
+
+            <p>
+                ₹{{ "%.2f"|format(total_expenses) }}
+            </p>
+        </div>
+
+
+        <div class="card">
+            <h3>📈 Total Profit</h3>
+
+            <p>
+                ₹{{ "%.2f"|format(profit) }}
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- FARM EXPENSES -->
+
+    <h2>🌱 Farm Expenses</h2>
+
+    <div class="expenses">
+
+        <div class="expense-item">
+            <span>🌾 Seeds</span>
+
+            <strong>
+                ₹{{ "%.2f"|format(category_expenses["Seeds"]) }}
+            </strong>
+        </div>
+
+
+        <div class="expense-item">
+            <span>🧪 Fertilizers</span>
+
+            <strong>
+                ₹{{ "%.2f"|format(category_expenses["Fertilizers"]) }}
+            </strong>
+        </div>
+
+
+        <div class="expense-item">
+            <span>🧴 Pesticides</span>
+
+            <strong>
+                ₹{{ "%.2f"|format(category_expenses["Pesticides"]) }}
+            </strong>
+        </div>
+
+
+        <div class="expense-item">
+            <span>👷 Labour</span>
+
+            <strong>
+                ₹{{ "%.2f"|format(category_expenses["Labour"]) }}
+            </strong>
+        </div>
+
+
+        <div class="expense-item">
+            <span>⛽ Fuel</span>
+
+            <strong>
+                ₹{{ "%.2f"|format(category_expenses["Fuel"]) }}
+            </strong>
+        </div>
+
+
+        <div class="expense-item">
+            <span>🚜 Machinery</span>
+
+            <strong>
+                ₹{{ "%.2f"|format(category_expenses["Machinery"]) }}
+            </strong>
+        </div>
+
+    </div>
+
+
+    <!-- CHARTS -->
+
+    <h2>📊 Expense Analysis</h2>
+
+    <div class="charts">
+
+        <div class="chart-card">
+
+            <h3>Expense by Category</h3>
+
+            <canvas id="expenseChart"></canvas>
+
+        </div>
+
+
+        <div class="chart-card">
+
+            <h3>Income vs Expenses</h3>
+
+            <canvas id="financeChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- ACTION BUTTONS -->
+
+    <div class="buttons">
+
+        <a href="/add-expense" class="action-button">
+            ➕ Add Expense
+        </a>
+
+
+        <a href="/add-income" class="action-button">
+            💰 Add Income
+        </a>
+
+
+        <a href="/transactions" class="action-button">
+            📋 Transaction History
+        </a>
+
+
+        <a href="/budget" class="action-button">
+            🎯 Farm Budget
+        </a>
+
+
+        <a href="/logout" class="action-button">
+            🚪 Logout
+        </a>
+
+    </div>
+
+</main>
+
+
+<!-- ================= CHART JAVASCRIPT ================= -->
+
+<script>
+
+    // ================= EXPENSE CHART =================
+
+    const expenseChart =
+        document.getElementById("expenseChart");
+
+    new Chart(expenseChart, {
+
+        type: "doughnut",
+
+        data: {
+
+            labels: [
+                "Seeds",
+                "Fertilizers",
+                "Pesticides",
+                "Labour",
+                "Fuel",
+                "Machinery"
+            ],
+
+            datasets: [{
+
+                data: [
+
+                    {{ category_expenses["Seeds"] }},
+
+                    {{ category_expenses["Fertilizers"] }},
+
+                    {{ category_expenses["Pesticides"] }},
+
+                    {{ category_expenses["Labour"] }},
+
+                    {{ category_expenses["Fuel"] }},
+
+                    {{ category_expenses["Machinery"] }}
+
+                ]
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true
+
+        }
+
+    });
+
+
+    // ================= INCOME VS EXPENSES =================
+
+    const financeChart =
+        document.getElementById("financeChart");
+
+    new Chart(financeChart, {
+
+        type: "bar",
+
+        data: {
+
+            labels: [
+                "Income",
+                "Expenses"
+            ],
+
+            datasets: [{
+
+                label: "Amount (₹)",
+
+                data: [
+
+                    {{ total_income }},
+
+                    {{ total_expenses }}
+
+                ]
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true
+
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
+
+</body>
+
+</html>
